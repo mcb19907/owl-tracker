@@ -36,6 +36,7 @@ export function Log({ owls, onSave, onBack, onOpenJournal }: Props) {
   const selectableOwls = namedOwls.length > 0 ? namedOwls : owls
 
   const [owlId, setOwlId] = useState<string>(selectableOwls[0]?.id ?? '')
+  const [editingTime, setEditingTime] = useState(false)
   const [branch, setBranch] = useState<string>(BRANCHES[0])
   const [customBranchEnabled, setCustomBranchEnabled] = useState(false)
   const [customBranch, setCustomBranch] = useState('')
@@ -173,28 +174,68 @@ export function Log({ owls, onSave, onBack, onOpenJournal }: Props) {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <button
-            onClick={() => stepTime(-15)}
+            onClick={() => stepTime(-1)}
             style={stepBtnStyle}
-            aria-label="Earlier"
+            aria-label="One minute earlier"
           >
             −
           </button>
-          <div
-            style={{
-              fontFamily: t.display,
-              fontSize: 32,
-              color: t.accent,
-              lineHeight: 1,
-              minWidth: 110,
-              textAlign: 'center',
-            }}
-          >
-            {fmtTime(dateValue)}
-          </div>
+          {editingTime ? (
+            <input
+              type="time"
+              autoFocus
+              value={`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`}
+              onChange={(e) => {
+                const [h, m] = e.target.value.split(':').map(Number)
+                if (!Number.isNaN(h) && !Number.isNaN(m)) {
+                  setHours(h)
+                  setMinutes(m)
+                }
+              }}
+              onBlur={() => setEditingTime(false)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === 'Escape') {
+                  ;(e.target as HTMLInputElement).blur()
+                }
+              }}
+              style={{
+                fontFamily: t.display,
+                fontSize: 30,
+                color: t.accent,
+                background: 'rgba(255,255,255,0.06)',
+                border: `1px solid ${t.borderStrong}`,
+                borderRadius: 8,
+                padding: '4px 8px',
+                outline: 'none',
+                minWidth: 110,
+                textAlign: 'center',
+                colorScheme: 'dark',
+              }}
+            />
+          ) : (
+            <button
+              onClick={() => setEditingTime(true)}
+              style={{
+                fontFamily: t.display,
+                fontSize: 32,
+                color: t.accent,
+                lineHeight: 1,
+                minWidth: 110,
+                textAlign: 'center',
+                background: 'none',
+                border: 'none',
+                cursor: 'text',
+                padding: 0,
+              }}
+              aria-label="Edit time"
+            >
+              {fmtTime(dateValue)}
+            </button>
+          )}
           <button
-            onClick={() => stepTime(15)}
+            onClick={() => stepTime(1)}
             style={stepBtnStyle}
-            aria-label="Later"
+            aria-label="One minute later"
           >
             +
           </button>
