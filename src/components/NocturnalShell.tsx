@@ -14,7 +14,12 @@ const STARFIELD = `radial-gradient(1px 1px at 23px 47px, white, transparent),
   radial-gradient(0.5px 0.5px at 320px 290px, white, transparent),
   radial-gradient(circle at 50% 0%, rgba(155,180,255,0.12), transparent 50%)`
 
-export function NocturnalShell({ children }: { children: ReactNode }) {
+type Props = {
+  children: ReactNode
+  footer?: ReactNode
+}
+
+export function NocturnalShell({ children, footer }: Props) {
   return (
     <div
       style={{
@@ -40,15 +45,27 @@ export function NocturnalShell({ children }: { children: ReactNode }) {
       />
       <div
         style={{
-          position: 'relative',
-          zIndex: 1,
-          width: '100%',
-          height: '100%',
+          position: 'absolute',
+          inset: 0,
           overflowY: 'auto',
+          zIndex: 1,
         }}
       >
         {children}
       </div>
+      {footer && (
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 2,
+          }}
+        >
+          {footer}
+        </div>
+      )}
     </div>
   )
 }

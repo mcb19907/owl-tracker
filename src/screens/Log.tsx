@@ -75,8 +75,80 @@ export function Log({ owls, onSave, onBack, onOpenJournal }: Props) {
     })
   }
 
+  const footer = (
+    <div
+      style={{
+        padding: '20px 22px 22px',
+        display: 'flex',
+        gap: 10,
+        background: `linear-gradient(to top, ${t.bg} 75%, ${t.bg}ee 90%, transparent)`,
+      }}
+    >
+      <button
+        onClick={onOpenJournal}
+        style={{
+          flex: 1,
+          height: 48,
+          borderRadius: 12,
+          background: t.bgCard,
+          border: `1px solid ${t.border}`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 8,
+          fontFamily: t.sans,
+          fontSize: 14,
+          fontWeight: 500,
+          color: t.text,
+          cursor: 'pointer',
+        }}
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        >
+          <line x1="3" y1="4" x2="11" y2="4" />
+          <line x1="3" y1="7" x2="11" y2="7" />
+          <line x1="3" y1="10" x2="11" y2="10" />
+        </svg>
+        Sighting journal
+      </button>
+      <button
+        onClick={handleSave}
+        disabled={!canSave}
+        style={{
+          flex: 1.4,
+          height: 48,
+          borderRadius: 12,
+          background: t.accent,
+          color: t.bg,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontFamily: t.sans,
+          fontSize: 15,
+          fontWeight: 600,
+          letterSpacing: '0.01em',
+          border: 'none',
+          cursor: canSave ? 'pointer' : 'not-allowed',
+          opacity: canSave ? 1 : 0.5,
+          boxShadow: canSave
+            ? `0 0 24px ${t.accent}55, 0 4px 12px rgba(0,0,0,0.3)`
+            : 'none',
+        }}
+      >
+        Save sighting
+      </button>
+    </div>
+  )
+
   return (
-    <NocturnalShell>
+    <NocturnalShell footer={footer}>
       <div
         style={{
           padding: '14px 22px 0',
@@ -364,9 +436,10 @@ export function Log({ owls, onSave, onBack, onOpenJournal }: Props) {
         </div>
       </div>
 
-      <div style={{ padding: '20px 22px 0' }}>
+      <div style={{ padding: '20px 22px 0', display: 'flex', gap: 10 }}>
         <div
           style={{
+            flex: 1,
             background: t.bgCard,
             borderRadius: 12,
             padding: 12,
@@ -386,8 +459,8 @@ export function Log({ owls, onSave, onBack, onOpenJournal }: Props) {
           <div
             style={{
               display: 'flex',
-              alignItems: 'center',
-              gap: 12,
+              alignItems: 'baseline',
+              gap: 8,
               marginTop: 6,
             }}
           >
@@ -405,24 +478,17 @@ export function Log({ owls, onSave, onBack, onOpenJournal }: Props) {
             <button
               onClick={() => setHoots((h) => Math.max(0, h - 1))}
               style={tinyStepBtnStyle}
-              aria-label="One fewer hoot"
             >
               −
             </button>
-            <button
-              onClick={() => setHoots((h) => h + 1)}
-              style={tinyStepBtnStyle}
-              aria-label="One more hoot"
-            >
+            <button onClick={() => setHoots((h) => h + 1)} style={tinyStepBtnStyle}>
               +
             </button>
           </div>
         </div>
-      </div>
-
-      <div style={{ padding: '12px 22px 0' }}>
         <div
           style={{
+            flex: 1.4,
             background: t.bgCard,
             borderRadius: 12,
             padding: 12,
@@ -443,8 +509,8 @@ export function Log({ owls, onSave, onBack, onOpenJournal }: Props) {
             style={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: 6,
-              marginTop: 8,
+              gap: 4,
+              marginTop: 6,
             }}
           >
             {MOODS.map((m) => {
@@ -455,8 +521,8 @@ export function Log({ owls, onSave, onBack, onOpenJournal }: Props) {
                   onClick={() => setMood(m)}
                   style={{
                     ...chipStyle(active),
-                    fontSize: 12,
-                    padding: '6px 12px',
+                    fontSize: 10,
+                    padding: '3px 8px',
                   }}
                 >
                   {m}
@@ -489,82 +555,7 @@ export function Log({ owls, onSave, onBack, onOpenJournal }: Props) {
         />
       </div>
 
-      <div style={{ height: 140 }} />
-
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          padding: '20px 22px 22px',
-          display: 'flex',
-          gap: 10,
-          background: `linear-gradient(to top, ${t.bg} 75%, ${t.bg}ee 90%, transparent)`,
-          zIndex: 2,
-        }}
-      >
-        <button
-          onClick={onOpenJournal}
-          style={{
-            flex: 1,
-            height: 48,
-            borderRadius: 12,
-            background: t.bgCard,
-            border: `1px solid ${t.border}`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 8,
-            fontFamily: t.sans,
-            fontSize: 14,
-            fontWeight: 500,
-            color: t.text,
-            cursor: 'pointer',
-          }}
-        >
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          >
-            <line x1="3" y1="4" x2="11" y2="4" />
-            <line x1="3" y1="7" x2="11" y2="7" />
-            <line x1="3" y1="10" x2="11" y2="10" />
-          </svg>
-          Sighting journal
-        </button>
-        <button
-          onClick={handleSave}
-          disabled={!canSave}
-          style={{
-            flex: 1.4,
-            height: 48,
-            borderRadius: 12,
-            background: t.accent,
-            color: t.bg,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontFamily: t.sans,
-            fontSize: 15,
-            fontWeight: 600,
-            letterSpacing: '0.01em',
-            border: 'none',
-            cursor: canSave ? 'pointer' : 'not-allowed',
-            opacity: canSave ? 1 : 0.5,
-            boxShadow: canSave
-              ? `0 0 24px ${t.accent}55, 0 4px 12px rgba(0,0,0,0.3)`
-              : 'none',
-          }}
-        >
-          Save sighting
-        </button>
-      </div>
+      <div style={{ height: 110 }} />
     </NocturnalShell>
   )
 }
