@@ -1,23 +1,60 @@
+import { useState } from 'react'
+import { useStore } from './store'
+import type { Screen } from './types'
+import { Home } from './screens/Home'
+import { Log } from './screens/Log'
+import { Timeline } from './screens/Timeline'
+import { Calendar } from './screens/Calendar'
+
 function App() {
+  const { state, renameOwl, addSighting } = useStore()
+  const [screen, setScreen] = useState<Screen>('home')
+
   return (
     <div
       style={{
-        minHeight: '100vh',
+        minHeight: '100dvh',
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#0a0e1a',
-        color: '#e8ecf6',
-        fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
-        gap: 12,
+        background: '#050810',
       }}
     >
-      <div style={{ fontSize: 48, color: '#c9a96e' }}>🦉</div>
-      <div style={{ fontSize: 22 }}>Nocturnal</div>
-      <div style={{ fontSize: 12, color: 'rgba(232,236,246,0.55)' }}>
-        Hello world. Build pipeline OK.
-      </div>
+      {screen === 'home' && (
+        <Home
+          owls={state.owls}
+          sightings={state.sightings}
+          onRenameOwl={renameOwl}
+          onOpenLog={() => setScreen('log')}
+        />
+      )}
+      {screen === 'log' && (
+        <Log
+          owls={state.owls}
+          onSave={(s) => {
+            addSighting(s)
+            setScreen('home')
+          }}
+          onBack={() => setScreen('home')}
+          onOpenJournal={() => setScreen('timeline')}
+        />
+      )}
+      {screen === 'timeline' && (
+        <Timeline
+          owls={state.owls}
+          sightings={state.sightings}
+          onBack={() => setScreen('home')}
+          onSwitch={(next) => setScreen(next)}
+        />
+      )}
+      {screen === 'calendar' && (
+        <Calendar
+          owls={state.owls}
+          sightings={state.sightings}
+          onBack={() => setScreen('home')}
+          onSwitch={(next) => setScreen(next)}
+        />
+      )}
     </div>
   )
 }
