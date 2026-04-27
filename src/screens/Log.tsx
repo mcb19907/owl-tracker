@@ -364,10 +364,9 @@ export function Log({ owls, onSave, onBack, onOpenJournal }: Props) {
         </div>
       </div>
 
-      <div style={{ padding: '20px 22px 0', display: 'flex', gap: 10 }}>
+      <div style={{ padding: '20px 22px 0' }}>
         <div
           style={{
-            flex: 1,
             background: t.bgCard,
             borderRadius: 12,
             padding: 12,
@@ -387,8 +386,8 @@ export function Log({ owls, onSave, onBack, onOpenJournal }: Props) {
           <div
             style={{
               display: 'flex',
-              alignItems: 'baseline',
-              gap: 8,
+              alignItems: 'center',
+              gap: 12,
               marginTop: 6,
             }}
           >
@@ -406,17 +405,24 @@ export function Log({ owls, onSave, onBack, onOpenJournal }: Props) {
             <button
               onClick={() => setHoots((h) => Math.max(0, h - 1))}
               style={tinyStepBtnStyle}
+              aria-label="One fewer hoot"
             >
               −
             </button>
-            <button onClick={() => setHoots((h) => h + 1)} style={tinyStepBtnStyle}>
+            <button
+              onClick={() => setHoots((h) => h + 1)}
+              style={tinyStepBtnStyle}
+              aria-label="One more hoot"
+            >
               +
             </button>
           </div>
         </div>
+      </div>
+
+      <div style={{ padding: '12px 22px 0' }}>
         <div
           style={{
-            flex: 1.4,
             background: t.bgCard,
             borderRadius: 12,
             padding: 12,
@@ -437,8 +443,8 @@ export function Log({ owls, onSave, onBack, onOpenJournal }: Props) {
             style={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: 4,
-              marginTop: 6,
+              gap: 6,
+              marginTop: 8,
             }}
           >
             {MOODS.map((m) => {
@@ -449,8 +455,8 @@ export function Log({ owls, onSave, onBack, onOpenJournal }: Props) {
                   onClick={() => setMood(m)}
                   style={{
                     ...chipStyle(active),
-                    fontSize: 10,
-                    padding: '3px 8px',
+                    fontSize: 12,
+                    padding: '6px 12px',
                   }}
                 >
                   {m}
@@ -483,7 +489,7 @@ export function Log({ owls, onSave, onBack, onOpenJournal }: Props) {
         />
       </div>
 
-      <div style={{ height: 100 }} />
+      <div style={{ height: 140 }} />
 
       <div
         style={{
